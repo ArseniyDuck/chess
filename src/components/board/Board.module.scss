@@ -1,0 +1,8 @@
+.board {
+   display: flex;
+   flex-wrap: wrap;
+   width: calc(var(--cell) * 8);
+   height: calc(var(--cell) * 8);
+   padding: 10px;
+   background: var(--board-color);
+}

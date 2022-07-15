@@ -1,0 +1,27 @@
+$breakpoints: (
+   xs: 420,
+   sm: 576,
+   md: 768,
+   lg: 992,
+   xl: 1200,
+   xxl: 1400,
+);
+
+$maxWidth: 1536;
+$maxWidthContainer: 1350;
+
+$selectionColor: rgba(41, 123, 245, .5);
+
+:root {
+   --cell: 70px;
+   --light-cell: #c4bca6;
+   --dark-cell: #5e5a56;
+
+   --figure: 65px;
+
+   --main-color: rgb(255, 255, 255);
+   --board-color: rgb(201, 201, 201);
+
+   --hover: all 0.12s linear;
+   --move: all 0.2s ease-in-out;
+}

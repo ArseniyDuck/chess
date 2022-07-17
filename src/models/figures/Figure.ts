@@ -11,6 +11,7 @@ export class Figure {
       this.color = color;
       this.logo = null;
       this.cell = cell;
+      this.cell.figure = this;
       this.name = FigureNames.FIGURE;
    }
 

@@ -21,7 +21,7 @@ const Board: React.FC<PropsType> = (props) => {
    return (
       <div className={s.board}>
          {cells.map(row => row.map((cell, index) => (
-            <Cell key={index} {...cell} />
+            <Cell cell={cell} key={index} />
          )))}
       </div>
    );

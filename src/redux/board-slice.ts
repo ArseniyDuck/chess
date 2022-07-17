@@ -26,7 +26,7 @@ export const boardSlice = createSlice({
                if ((x + y) % 2 !== 0) {
                   row.push(new Cell(x, y, Colors.BLACK, null));
                } else {
-                  row.push(new Cell(x, y, Colors.BLACK, null));
+                  row.push(new Cell(x, y, Colors.WHITE, null));
                }
             }
 

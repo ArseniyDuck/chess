@@ -48,30 +48,30 @@ export const boardSlice = createSlice({
          new Bishop(Colors.WHITE, state.cells[7][2])
          new Bishop(Colors.WHITE, state.cells[7][5])
 
-         new Bishop(Colors.WHITE, state.cells[0][2])
-         new Bishop(Colors.WHITE, state.cells[0][5])
+         new Bishop(Colors.BLACK, state.cells[0][2])
+         new Bishop(Colors.BLACK, state.cells[0][5])
 
          // Knights
          new Knight(Colors.WHITE, state.cells[7][1])
          new Knight(Colors.WHITE, state.cells[7][6])
 
-         new Knight(Colors.WHITE, state.cells[0][1])
-         new Knight(Colors.WHITE, state.cells[0][6])
+         new Knight(Colors.BLACK, state.cells[0][1])
+         new Knight(Colors.BLACK, state.cells[0][6])
 
          // Rooks
          new Rook(Colors.WHITE, state.cells[7][0])
          new Rook(Colors.WHITE, state.cells[7][7])
 
-         new Rook(Colors.WHITE, state.cells[0][0])
-         new Rook(Colors.WHITE, state.cells[0][7])
+         new Rook(Colors.BLACK, state.cells[0][0])
+         new Rook(Colors.BLACK, state.cells[0][7])
 
          // Queens
          new Queen(Colors.WHITE, state.cells[7][3])
-         new Queen(Colors.WHITE, state.cells[0][3])
+         new Queen(Colors.BLACK, state.cells[0][3])
 
          // Kings
          new King(Colors.WHITE, state.cells[7][4])
-         new King(Colors.WHITE, state.cells[0][4])
+         new King(Colors.BLACK, state.cells[0][4])
 
          state.isInit = true
       }

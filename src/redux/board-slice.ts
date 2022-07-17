@@ -1,17 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { Cell, Colors, FigureNames } from '../types';
-import whitePawn from '../figures/pawn-white.png';
-import blackPawn from '../figures/pawn-black.png';
-import whiteRook from '../figures/rook-white.png';
-import blackRook from '../figures/rook-black.png';
-import whiteKnight from '../figures/knight-white.png';
-import blackKnight from '../figures/knight-black.png';
-import whiteBishop from '../figures/bishop-white.png';
-import blackBishop from '../figures/bishop-black.png';
-import whiteQueen from '../figures/queen-white.png';
-import blackQueen from '../figures/queen-black.png';
-import whiteKing from '../figures/king-white.png';
-import blackKing from '../figures/king-black.png';
+import { Pawn, Bishop, Knight, Rook, Queen, King } from '../models/figures'
+import { Cell } from '../models/Cell'
+import { Colors } from '../types';
 
 
 type initialStateType = {
@@ -34,9 +24,9 @@ export const boardSlice = createSlice({
 
             for (let y = 0; y < 8; y++) {
                if ((x + y) % 2 !== 0) {
-                  row.push({ color: Colors.BLACK, x, y, figure: null });
+                  row.push(new Cell(x, y, Colors.BLACK, null));
                } else {
-                  row.push({ color: Colors.WHITE, x, y, figure: null });
+                  row.push(new Cell(x, y, Colors.BLACK, null));
                }
             }
 
@@ -47,113 +37,41 @@ export const boardSlice = createSlice({
       initFigures: (state) => {
          // Pawns
          for (let i = 0; i < 8; i++) {
-            state.cells[6][i].figure = {
-               name: FigureNames.PAWN,
-               color: Colors.WHITE,
-               logo: whitePawn,
-            }
+            new Pawn(Colors.WHITE, state.cells[6][i])
          }
 
          for (let i = 0; i < 8; i++) {
-            state.cells[1][i].figure = {
-               name: FigureNames.PAWN,
-               color: Colors.BLACK,
-               logo: blackPawn,
-            }
+            new Pawn(Colors.BLACK, state.cells[1][i])
          }
 
          // Bishops
-         state.cells[7][2].figure = {
-            name: FigureNames.BISHOP,
-            color: Colors.WHITE,
-            logo: whiteBishop,
-         }
-         state.cells[7][5].figure = {
-            name: FigureNames.BISHOP,
-            color: Colors.WHITE,
-            logo: whiteBishop,
-         }
+         new Bishop(Colors.WHITE, state.cells[7][2])
+         new Bishop(Colors.WHITE, state.cells[7][5])
 
-         state.cells[0][2].figure = {
-            name: FigureNames.BISHOP,
-            color: Colors.BLACK,
-            logo: blackBishop,
-         }
-         state.cells[0][5].figure = {
-            name: FigureNames.BISHOP,
-            color: Colors.BLACK,
-            logo: blackBishop,
-         }
+         new Bishop(Colors.WHITE, state.cells[0][2])
+         new Bishop(Colors.WHITE, state.cells[0][5])
 
          // Knights
-         state.cells[7][1].figure = {
-            name: FigureNames.KNIGHT,
-            color: Colors.WHITE,
-            logo: whiteKnight,
-         }
-         state.cells[7][6].figure = {
-            name: FigureNames.KNIGHT,
-            color: Colors.WHITE,
-            logo: whiteKnight,
-         }
+         new Knight(Colors.WHITE, state.cells[7][1])
+         new Knight(Colors.WHITE, state.cells[7][6])
 
-         state.cells[0][1].figure = {
-            name: FigureNames.KNIGHT,
-            color: Colors.BLACK,
-            logo: blackKnight,
-         }
-         state.cells[0][6].figure = {
-            name: FigureNames.KNIGHT,
-            color: Colors.BLACK,
-            logo: blackKnight,
-         }
+         new Knight(Colors.WHITE, state.cells[0][1])
+         new Knight(Colors.WHITE, state.cells[0][6])
 
          // Rooks
-         state.cells[7][0].figure = {
-            name: FigureNames.ROOK,
-            color: Colors.WHITE,
-            logo: whiteRook,
-         }
-         state.cells[7][7].figure = {
-            name: FigureNames.ROOK,
-            color: Colors.WHITE,
-            logo: whiteRook,
-         }
+         new Rook(Colors.WHITE, state.cells[7][0])
+         new Rook(Colors.WHITE, state.cells[7][7])
 
-         state.cells[0][0].figure = {
-            name: FigureNames.ROOK,
-            color: Colors.BLACK,
-            logo: blackRook,
-         }
-         state.cells[0][7].figure = {
-            name: FigureNames.ROOK,
-            color: Colors.BLACK,
-            logo: blackRook,
-         }
+         new Rook(Colors.WHITE, state.cells[0][0])
+         new Rook(Colors.WHITE, state.cells[0][7])
 
          // Queens
-         state.cells[7][3].figure = {
-            name: FigureNames.QUEEN,
-            color: Colors.WHITE,
-            logo: whiteQueen,
-         }
-         state.cells[0][3].figure = {
-            name: FigureNames.QUEEN,
-            color: Colors.BLACK,
-            logo: blackQueen,
-         }
+         new Queen(Colors.WHITE, state.cells[7][3])
+         new Queen(Colors.WHITE, state.cells[0][3])
 
          // Kings
-         state.cells[7][4].figure = {
-            name: FigureNames.KING,
-            color: Colors.WHITE,
-            logo: whiteKing,
-         }
-         state.cells[0][4].figure = {
-            name: FigureNames.KING,
-            color: Colors.BLACK,
-            logo: blackKing,
-         }
+         new King(Colors.WHITE, state.cells[7][4])
+         new King(Colors.WHITE, state.cells[0][4])
 
          state.isInit = true
       }

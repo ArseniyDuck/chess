@@ -17,6 +17,7 @@ export enum Colors {
 }
 
 export enum FigureNames {
+   FIGURE = 'figure',
    PAWN = 'pawn',
    BISHOP = 'BISHOP',
    KNIGHT = 'knight',

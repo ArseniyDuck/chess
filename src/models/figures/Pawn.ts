@@ -1,12 +1,76 @@
 import { Cell } from '../Cell';
 import { Figure } from './Figure';
-import { Colors, FigureNames } from '../../types';
-import { whitePawn, blackPawn } from '../../figures';
+import { Colors, FigureNames, FigureLogos, PromotionFigures } from '../../models';
+import { Queen, Rook, Knight, Bishop } from '../../models/figures';
+
 
 export class Pawn extends Figure {
+   isFirstStep: boolean = true;
+   isReadyToPromote: boolean = false;
+
    constructor(color: Colors, cell: Cell) {
       super(color, cell);
-      this.logo = color === Colors.WHITE ? whitePawn : blackPawn;
+      this.logo = FigureLogos[FigureNames.PAWN][color]
       this.name = FigureNames.PAWN;
+   }
+
+   canMove(target: Cell): boolean {
+      if (!super.canMove(target)) {
+         return false;
+      }
+
+      const direction = this.cell.figure?.color === Colors.BLACK ? 1 : -1;
+      const firstStepDirection = this.cell.figure?.color === Colors.BLACK ? 2 : -2;
+
+      const firstStep = this.isFirstStep && (target.y === this.cell.y + firstStepDirection) && this.cell.board.getCell(target.x, this.cell.y + direction).isEmpty()
+
+      if ((target.y === this.cell.y + direction || firstStep)
+       && target.x === this.cell.x
+       && this.cell.board.getCell(target.x, target.y).isEmpty()) {
+         return true;
+      }
+
+      if (target.y === this.cell.y + direction
+       && (target.x === this.cell.x + 1 || target.x === this.cell.x - 1)
+       && this.cell.isEnemy(target)) {
+         return true;
+      }
+
+      return false;
+   }
+
+   promote(figure: PromotionFigures) {
+      let newFigure: Figure;
+
+      switch (figure) {
+         case FigureNames.QUEEN:
+            newFigure = new Queen(this.color, this.cell);
+            break;
+         case FigureNames.ROOK:
+            newFigure = new Rook(this.color, this.cell);
+            break;
+         case FigureNames.KNIGHT:
+            newFigure = new Knight(this.color, this.cell);
+            break;
+         case FigureNames.BISHOP:
+            newFigure = new Bishop(this.color, this.cell);
+            break;
+      }
+
+      this.cell.figure = newFigure;
+      this.isReadyToPromote = false;
+   }
+
+   moveFigure(target: Cell) {
+      super.moveFigure(target);
+      this.isFirstStep = false;
+
+      console.log(this.cell)
+
+      if ((this.cell.y === 1 && this.color === Colors.WHITE)
+       || (this.cell.y === 6 && this.color === Colors.BLACK)) {
+         this.isReadyToPromote = true;
+         console.log('the pawn is ready to promote')
+      }
    }
 }

@@ -13,14 +13,17 @@ $maxWidthContainer: 1350;
 $selectionColor: rgba(41, 123, 245, .5);
 
 :root {
-   --cell: 70px;
-   --light-cell: #c4bca6;
-   --dark-cell: #5e5a56;
+   --cell: 85px;
+   --white-cell: #c4bca6;
+   --black-cell: #5e5a56;
 
-   --figure: 65px;
+   --figure: 80px;
 
    --main-color: #1a1410;
    --board-color: #2d261f;
+
+   --selected-cell-highlight: rgba(220, 165, 75, .4);
+   --move-highlight: rgba(0, 0, 0, .2);
 
    --hover: all 0.12s linear;
    --move: all 0.2s ease-in-out;

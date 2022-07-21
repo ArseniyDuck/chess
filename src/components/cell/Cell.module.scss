@@ -1,20 +1,50 @@
 @import '../../styles/mixins';
 
 .cell {
+   position: relative;
    width: var(--cell);
    height: var(--cell);
+   box-sizing: border-box;
    
-   &.dark {
-      background: var(--dark-cell);
+   &.black {
+      background: var(--black-cell);
    }
 
-   &.light {
-      background: var(--light-cell);
+   &.white {
+      background: var(--white-cell);
+   }
+
+   &.selected {
+      box-shadow: inset 0px 0px 0px 10000px var(--selected-cell-highlight);
+   }
+
+   &.availableToMove::before {
+      content: '';
+      position: absolute;
+      width: 30%;
+      height: 30%;
+      border-radius: 50%;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: var(--move-highlight);
+   }
+
+   &.availableToAttack {
+      &::before {
+         content: '';
+         position: absolute;
+         width: 100%;
+         height: 100%;
+         border-radius: 50%;
+         box-sizing: border-box;
+         border: 6px solid var(--move-highlight);
+      }
    }
 }
 
 .figureCell {
-   cursor: grab;
+   cursor: pointer;
    display: flex;
    align-items: center;
    justify-content: center;
@@ -24,6 +54,5 @@
    img {
       width: var(--figure);
       height: var(--figure);
-      @include no-grab();
    }
 }

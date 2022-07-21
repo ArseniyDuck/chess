@@ -7,9 +7,10 @@ body {
    color: #FFFFFF;
    
    @include hide-scrollbar();
+   @include no-select();
 
-   &._disable-scroll {
-      overflow: hidden;
+   img {
+      @include no-grab();
    }
 }
 

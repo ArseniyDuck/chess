@@ -5,7 +5,7 @@ import { Queen, Rook, Knight, Bishop } from '../../models/figures';
 
 
 export class Pawn extends Figure {
-   isFirstStep: boolean = true;
+   movesCount: number = 0;
    isReadyToPromote: boolean = false;
    isEnPassant: boolean = false;
 
@@ -23,7 +23,7 @@ export class Pawn extends Figure {
       const direction = this.color === Colors.BLACK ? 1 : -1;
       const firstStepDirection = this.color === Colors.BLACK ? 2 : -2;
 
-      const firstStep = this.isFirstStep && (target.y === this.cell.y + firstStepDirection) && this.cell.board.getCell(target.x, this.cell.y + direction).isEmpty()
+      const firstStep = !this.movesCount && (target.y === this.cell.y + firstStepDirection) && this.cell.board.getCell(target.x, this.cell.y + direction).isEmpty()
 
       // Move forward
       if ((target.y === this.cell.y + direction || firstStep)
@@ -42,13 +42,24 @@ export class Pawn extends Figure {
       }
 
       // En passant
-      if ((this.cell.y === 3 && this.color === Colors.WHITE || this.cell.y === 4 && this.color === Colors.BLACK)
-       && (target.y === this.cell.y + direction && (
-        (target.x === this.cell.x + 1 && this.cell.board.getCell(this.cell.x + 1, 3.5 + direction / 2).figure instanceof Pawn)
-        || (target.x === this.cell.x - 1 && this.cell.board.getCell(this.cell.x - 1, 3.5 + direction / 2).figure instanceof Pawn)
-       ))) {
-         this.isEnPassant = true;
-         return true;
+      if (target.y === this.cell.y + direction) {
+         if (this.cell.y === 3.5 + direction / 2) {
+            if (target.x === this.cell.x + 1) {
+               const rightCell = this.cell.board.getCell(this.cell.x + 1, 3.5 + direction / 2);
+               if (rightCell.figure instanceof Pawn && rightCell.figure.movesCount === 1) {
+                  this.isEnPassant = true;
+                  return true;
+               }
+            }
+
+            if (target.x === this.cell.x - 1) {
+               const leftCell = this.cell.board.getCell(this.cell.x - 1, 3.5 + direction / 2);
+               if (leftCell.figure instanceof Pawn && leftCell.figure.movesCount === 1) {
+                  this.isEnPassant = true;
+                  return true;
+               }
+            }
+         }
       }
 
       return false;
@@ -83,7 +94,7 @@ export class Pawn extends Figure {
 
    moveFigure(target: Cell) {
       super.moveFigure(target);
-      this.isFirstStep = false;
+      this.movesCount++;
 
       if ((this.cell.y === 1 && this.color === Colors.WHITE)
        || (this.cell.y === 6 && this.color === Colors.BLACK)) {

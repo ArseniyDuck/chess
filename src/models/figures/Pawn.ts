@@ -7,6 +7,7 @@ import { Queen, Rook, Knight, Bishop } from '../../models/figures';
 export class Pawn extends Figure {
    isFirstStep: boolean = true;
    isReadyToPromote: boolean = false;
+   isEnPassant: boolean = false;
 
    constructor(color: Colors, cell: Cell) {
       super(color, cell);
@@ -19,24 +20,43 @@ export class Pawn extends Figure {
          return false;
       }
 
-      const direction = this.cell.figure?.color === Colors.BLACK ? 1 : -1;
-      const firstStepDirection = this.cell.figure?.color === Colors.BLACK ? 2 : -2;
+      const direction = this.color === Colors.BLACK ? 1 : -1;
+      const firstStepDirection = this.color === Colors.BLACK ? 2 : -2;
 
       const firstStep = this.isFirstStep && (target.y === this.cell.y + firstStepDirection) && this.cell.board.getCell(target.x, this.cell.y + direction).isEmpty()
 
+      // Move forward
       if ((target.y === this.cell.y + direction || firstStep)
        && target.x === this.cell.x
-       && this.cell.board.getCell(target.x, target.y).isEmpty()) {
+       && this.cell.board.getCell(target.x, target.y).isEmpty()
+      ) {
          return true;
       }
 
+      // Attack a figure
       if (target.y === this.cell.y + direction
        && (target.x === this.cell.x + 1 || target.x === this.cell.x - 1)
-       && this.cell.isEnemy(target)) {
+       && this.cell.isEnemy(target)
+      ) {
+         return true;
+      }
+
+      // En passant
+      if ((this.cell.y === 3 && this.color === Colors.WHITE || this.cell.y === 4 && this.color === Colors.BLACK)
+       && (target.y === this.cell.y + direction && (
+        (target.x === this.cell.x + 1 && this.cell.board.getCell(this.cell.x + 1, 3.5 + direction / 2).figure instanceof Pawn)
+        || (target.x === this.cell.x - 1 && this.cell.board.getCell(this.cell.x - 1, 3.5 + direction / 2).figure instanceof Pawn)
+       ))) {
+         this.isEnPassant = true;
          return true;
       }
 
       return false;
+   }
+
+   enPassant(pawnColor: Colors, target: Cell) {
+      const direction = pawnColor === Colors.BLACK ? 1 : -1;
+      target.board.getCell(target.x, target.y - direction).figure = null;
    }
 
    promote(figure: PromotionFigures) {
@@ -65,12 +85,14 @@ export class Pawn extends Figure {
       super.moveFigure(target);
       this.isFirstStep = false;
 
-      console.log(this.cell)
-
       if ((this.cell.y === 1 && this.color === Colors.WHITE)
        || (this.cell.y === 6 && this.color === Colors.BLACK)) {
          this.isReadyToPromote = true;
-         console.log('the pawn is ready to promote')
+      }
+
+      if (this.isEnPassant) {
+         this.enPassant(this.color, target);
+         this.isEnPassant = false;
       }
    }
 }

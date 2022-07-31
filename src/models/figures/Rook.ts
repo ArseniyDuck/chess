@@ -4,6 +4,8 @@ import { Colors, FigureNames, FigureLogos } from '../../models';
 
 
 export class Rook extends Figure {
+   isMoved: boolean = false;
+
    constructor(color: Colors, cell: Cell) {
       super(color, cell);
       this.logo = FigureLogos[FigureNames.ROOK][color]
@@ -24,5 +26,10 @@ export class Rook extends Figure {
       }
       
       return false;
+   }
+
+   moveFigure(target: Cell): void {
+      super.moveFigure(target);
+      this.isMoved = true;
    }
 }
